@@ -1,18 +1,31 @@
 <h1> <%= "#{@cat.name}'s Attributes" %> </h1>
 <table>
   <tr>
-    <td> name </td> <td> <%= @cat.name %></td>
+    <td> name: </td> <td> <%= @cat.name %></td>
   </tr>
   <tr>
-    <td> birth_date </td> <td> <%= @cat.birth_date %></td>
+    <td> birth_date: </td> <td> <%= @cat.birth_date %></td>
   </tr>
   <tr>
-    <td> color </td> <td> <%= @cat.color %></td>
+    <td> color: </td> <td> <%= @cat.color %></td>
   </tr>
   <tr>
-    <td> sex </td> <td> <%= @cat.sex %></td>
+    <td> sex: </td> <td> <%= @cat.sex %></td>
   </tr>
   <tr>
-    <td> description </td> <td> <%= @cat.description %></td>
+    <td> description: </td> <td> <%= @cat.description %></td>
+  </tr>
+  <tr>
+    <td> owner: </td> <td> <%= current_user.user_name %></td>
   </tr>
 </table>
+<%= @cat.picture_url %>
+<%= image_tag @cat.picture.url if @cat.picture? %>
+<% @cat.cat_rental_requests.each do |request| %>
+  <% if request.status == "APPROVED" %>
+    <%= "Start date: #{request.start_date}" %>
+    <%= "End date: #{request.end_date}" %>
+    <%= "Renter: #{User.find(request.renter_id).user_name}" %>
+    <br>
+  <% end %>
+<% end %>

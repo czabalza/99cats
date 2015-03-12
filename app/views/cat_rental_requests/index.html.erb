@@ -1,0 +1,7 @@
+<ul>
+  <% @all_requests.each do |request| %>
+    <li><%= Cat.find(request.cat_id).name %>
+        <%= request.start_date %>
+        <%= request.status %></li>
+  <%end%>
+</ul>

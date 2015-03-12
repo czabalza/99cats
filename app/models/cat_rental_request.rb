@@ -1,8 +1,14 @@
 class CatRentalRequest < ActiveRecord::Base
-  validates :cat_id, :start_date, :end_date, :status, presence: true
+  validates :cat_id, :start_date, :end_date, :status, :renter_id, presence: true
   validates :status, inclusion: {in: %w(PENDING APPROVED DENIED)}
 
   belongs_to :cat
+  belongs_to(
+  :renter,
+  class_name: 'User',
+  primary_key: :id,
+  foreign_key: :renter_id
+  )
 
   def overlapping_requests
     # byebug
@@ -20,6 +26,14 @@ class CatRentalRequest < ActiveRecord::Base
   def overlapping_approved_requests
     overlapping_requests.select do |request|
       request.status == 'APPROVED'
+    end
+  end
+
+  def approve!
+    if self.overlapping_approved_requests.empty?
+      self.status = "APPROVED"
+    else
+      self.status = "DENIED"
     end
   end
 end

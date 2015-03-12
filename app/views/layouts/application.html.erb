@@ -7,7 +7,20 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+  <% if current_user.nil? %>
+    <!-- <%= link_to "Log in", new_session_url %> -->
+  <% else %>
+  <h1>
+    <%= current_user.user_name.capitalize %>
+  </h1>
+    <form class="" action="<%= session_url %>" method="post">
+      <input name= "_method" type="hidden" value="delete">
+      <input type="hidden"
+         name="authenticity_token"
+         value="<%= form_authenticity_token %>">
+      <input type="submit" value="logout">
+    </form>
+  <% end%>
 <%= yield %>
 
 </body>

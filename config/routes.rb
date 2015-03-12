@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :cats do
-    resources :cat_rental_requests
-  end
-
+  resources :cats
+  resources :cat_rental_requests
+  resources :users
+  resource :session
 end

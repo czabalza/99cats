@@ -1,1 +1,51 @@
-<%= render "form" %>
+<!-- <%= render "form" %> -->
+<h1> <%= @title %> </h1>
+<ul>
+<% flash[:errors] && flash["errors"].each do |error| %>
+ <li><%= error %></li>
+ <%end%>
+</ul>
+<br>
+<form action="<%= cats_url %>" method="post">
+  <input type="hidden"
+         name="authenticity_token"
+         value="<%= form_authenticity_token %>">
+  <% if @cat.persisted? %>
+    <input type="hidden" value="patch">
+  <%end%>
+  <p>
+    Name: &nbsp
+  <input  type="text" name="cat[name]" value = <%= @cat.name %>>
+    Date: &nbsp
+  <input type="date" name="cat[birth_date]" value=<%= @cat.birth_date %>>
+    Color: &nbsp
+  <select name="cat[color]" >
+    <% ["gray", "orange", "black", "white", "calico", "turtoise_shell", "brown"].each do |color| %>
+    <option <%= "selected" if color == @cat.color %> value=<%=color%>><%=color.capitalize%></option>
+    <% end %>
+  </select>
+     Sex: &nbsp
+  <select name="cat[sex]">
+    <% ["M", "F"].each do |sex| %>
+    <option <%= "selected" if sex == @cat.sex %> value=<%=sex%>><%=sex%></option>
+    <% end %>
+  </select>
+  </p>
+  <p>
+     Description: &nbsp
+  </p>
+  <textarea name="cat[description]" rows="8" cols="40"><%= @cat.description %></textarea>
+  <p>
+    <!-- <%= form_for(@cat, html: { multipart: true }) do |f| %>
+    <%= f.file_field :picture %>
+    <% end %> -->
+
+    <%= form_for(@cat, html: { multipart: true }) do |f| %>
+    <%= f.submit "Post", class: "btn btn-primary" %>
+    <span class="picture">
+      <%= f.file_field :picture %>
+    </span>
+  <% end %>
+  <input type="submit" value= <%= @submit %>>
+  </p>
+</form>

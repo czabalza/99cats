@@ -1,12 +1,19 @@
 class CatRentalRequestsController < ApplicationController
+  
   def new
     @request = CatRentalRequest.new
     @available_cats = Cat.all
     render :new
   end
 
+  def index
+    @all_requests = CatRentalRequest.all
+    render :index
+  end
   def create
     @request = CatRentalRequest.new(request_params)
+    @request.renter_id = current_user.id
+    @request.approve!
     if @request.save
       redirect_to cat_url(@request.cat_id)
     else
